@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import './App.css'
 
 function App() {
   const [banis, setBanis] = useState([
@@ -49,33 +50,34 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Nitnem Tracker</h1>
-      <p>Current streak: {streak} days</p>
-      {banis.map(function (bani, index) {
-        return (
-          <label key={index}>
-            <input
-              type="checkbox"
-              checked={bani.completed}
-              onChange={function () {
-                const updatedBanis = banis.map(function (b, i) {
-                  if (i === index) {
-                    return { ...b, completed: !b.completed }
-                  } else {
-                    return b
-                  }
-                })
-                setBanis(updatedBanis)
-              }}
-            />
-            {bani.name}
-          </label>
-        )
-      })}
-      <br />
-      <button onClick={saveToday}>Save Today's Log</button>
-    </div>
+    <div className="app">
+  <h1>Nitnem Tracker</h1>
+  <p className="streak">Current streak: <strong>{streak} days</strong></p>
+  <div className="checklist">
+    {banis.map(function (bani, index) {
+      return (
+        <label className="bani-item" key={index}>
+          <input
+            type="checkbox"
+            checked={bani.completed}
+            onChange={function () {
+              const updatedBanis = banis.map(function (b, i) {
+                if (i === index) {
+                  return { ...b, completed: !b.completed }
+                } else {
+                  return b
+                }
+              })
+              setBanis(updatedBanis)
+            }}
+          />
+          {bani.name}
+        </label>
+      )
+    })}
+  </div>
+  <button onClick={saveToday}>Save Today's Log</button>
+</div>
   )
 }
 
