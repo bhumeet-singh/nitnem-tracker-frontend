@@ -15,6 +15,15 @@ function formatDate(dateString) {
   })
 }
 
+// Returns today's local date as "YYYY-MM-DD", e.g. "2026-09-26".
+function getTodayString() {
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, "0")
+  const day = String(today.getDate()).padStart(2, "0")
+  return year + "-" + month + "-" + day
+}
+
 function App() {
   const [banis, setBanis] = useState([
     { name: "Japji Sahib", completed: false },
@@ -50,9 +59,35 @@ function App() {
       })
   }
 
+  function loadToday() {
+    fetch(`${import.meta.env.VITE_API_URL}/daily-log/${getTodayString()}`)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (data) {
+        // On an error the backend sends no completedBanis array, so stop here.
+        if (!Array.isArray(data.completedBanis)) {
+          return
+        }
+
+        // [{ name: "Japji Sahib", time_of_day: "morning" }, ...] -> ["Japji Sahib", ...]
+        const savedNames = data.completedBanis.map(function (bani) {
+          return bani.name
+        })
+
+        // Check each box whose bani was saved today; uncheck the rest.
+        setBanis(function (currentBanis) {
+          return currentBanis.map(function (bani) {
+            return { ...bani, completed: savedNames.includes(bani.name) }
+          })
+        })
+      })
+  }
+
   useEffect(function () {
     loadStreak()
     loadHistory()
+    loadToday()
   }, [])
 
   function saveToday() {
@@ -64,11 +99,7 @@ function App() {
         return bani.name
       })
 
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, "0")
-    const day = String(today.getDate()).padStart(2, "0")
-    const dateString = year + "-" + month + "-" + day
+    const dateString = getTodayString()
 
     fetch(`${import.meta.env.VITE_API_URL}/daily-log-db`, {
       method: "POST",
