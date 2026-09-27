@@ -6,7 +6,7 @@ body {
 }
 
 .app {
-  max-width: 420px;
+  max-width: 880px;
   margin: 0 auto;
   padding: 64px 24px;
   text-align: center;
@@ -67,4 +67,92 @@ button {
 
 button:hover {
   background: #722f2f;
+}
+
+/* ---------- Two-column layout ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+  text-align: left;
+}
+
+.layout h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: #8B3A3A;
+  margin: 0 0 16px;
+}
+
+/* Stack the columns on narrow screens (phones). */
+@media (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* ---------- History list ---------- */
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 26rem;
+  overflow-y: auto;
+  border-top: 1px solid #E8DFD0;
+}
+
+.history-item {
+  padding: 14px 4px;
+  border-bottom: 1px solid #E8DFD0;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.history-date {
+  font-weight: 600;
+  color: #2B2B2B;
+  min-width: 6.5rem;
+}
+
+.history-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #8B3A3A;
+  box-sizing: border-box;
+}
+
+.dot-done {
+  background: #8B3A3A;
+}
+
+.history-count {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: #C9A227;
+  font-weight: 600;
+}
+
+.history-banis {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  color: #6B5E52;
+}
+
+.history-empty {
+  color: #6B5E52;
 }
